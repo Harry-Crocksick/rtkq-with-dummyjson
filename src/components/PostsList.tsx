@@ -1,10 +1,21 @@
+import { useEffect } from "react";
 import { ReturnedType } from "../lib/types";
+import { useDeletePostMutation } from "../features/api/posts";
 
 export default function PostsList({
   paginatedPosts,
 }: {
   paginatedPosts: ReturnedType;
 }) {
+  const [deletePost, { data: deletedPost, isLoading, isSuccess }] =
+    useDeletePostMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(deletedPost);
+    }
+  }, [isSuccess, deletedPost]);
+
   return (
     <article className="m-4 flex flex-col gap-6">
       {paginatedPosts.posts.map((post) => (
@@ -28,6 +39,16 @@ export default function PostsList({
               </li>
             ))}
           </ul>
+          <button
+            className="mt-4 rounded-md max-w-max px-4 py-1 text-white font-semibold bg-red-500"
+            onClick={() => deletePost(post.id)}
+          >
+            {isLoading ? (
+              <div className="animate-spin border-[3px] border-t-red-800 rounded-full w-5 h-5"></div>
+            ) : (
+              "DELETE"
+            )}
+          </button>
         </section>
       ))}
     </article>
