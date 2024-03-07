@@ -1,4 +1,4 @@
-import { nanoid } from "@reduxjs/toolkit";
+/* import { nanoid } from "@reduxjs/toolkit";
 import { factory, primaryKey } from "@mswjs/data";
 import { faker } from "@faker-js/faker";
 import { Post, postStatuses } from "../lib/types";
@@ -55,3 +55,4 @@ export const handlers = [
   }),
   ...db.post.toHandlers("rest"),
 ] as const;
+ */

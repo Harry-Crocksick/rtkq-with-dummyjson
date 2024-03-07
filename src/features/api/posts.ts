@@ -6,6 +6,16 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "https://dummyjson.com" }),
   tagTypes: ["Posts"],
   endpoints: (builder) => ({
+    listPosts: builder.query<ReturnedType, { skip: number; limit: number }>({
+      query: ({ skip = 0, limit = 5 }) => `/posts?limit=${limit}&skip=${skip}`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.posts.map(({ id }) => ({ type: "Posts" as const, id })),
+              { type: "Posts", id: "PARTIAL-LIST" },
+            ]
+          : [{ type: "Posts", id: "PARTIAL-LIST" }],
+    }),
     createPost: builder.mutation<PostTypes, Partial<PostTypes>>({
       query: (body) => ({
         url: "/posts",
@@ -18,15 +28,16 @@ export const api = createApi({
       query: () => "/posts",
       providesTags: ["Posts"],
     }),
-    listPosts: builder.query<ReturnedType, { skip: number; limit: number }>({
-      query: ({ skip = 0, limit = 5 }) => `/posts?limit=${limit}&skip=${skip}`,
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.posts.map(({ id }) => ({ type: "Posts" as const, id })),
-              { type: "Posts", id: "PARTIAL-LIST" },
-            ]
-          : [{ type: "Posts", id: "PARTIAL-LIST" }],
+    updatePost: builder.mutation<PostTypes, Partial<PostTypes>>({
+      query: ({ id, ...body }) => ({
+        url: `/posts/${id}`,
+        method: "PATCH",
+        body,
+      }),
+      invalidatesTags: (_result, _error, { id }) => [
+        { type: "Posts", id },
+        { type: "Posts", id: "PARTIAL-LIST" },
+      ],
     }),
     deletePost: builder.mutation<PostTypes, number>({
       query: (id) => ({
@@ -44,7 +55,8 @@ export const api = createApi({
 export const {
   useCreatePostMutation,
   useReadAllPostsQuery,
-  useListPostsQuery,
+  useUpdatePostMutation,
   useDeletePostMutation,
+  useListPostsQuery,
   usePrefetch,
 } = api;

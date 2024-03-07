@@ -1,4 +1,4 @@
-import { http, HttpResponse, delay } from "msw";
+/* import { http, HttpResponse, delay } from "msw";
 
 async function isAuthenticated(request: Request) {
   if (!request.headers.has("cookies")) {
@@ -7,8 +7,6 @@ async function isAuthenticated(request: Request) {
 }
 
 export const handlers = [
-  /* http[method](predicate, resolver) */
-
   http.get("/todos", async ({ request, params, cookies }) => {
     await delay(2000);
     return HttpResponse.json({
@@ -28,3 +26,4 @@ export const handlers = [
     });
   }),
 ];
+ */
