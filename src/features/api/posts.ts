@@ -5,6 +5,7 @@ export const api = createApi({
   reducerPath: "/posts",
   baseQuery: fetchBaseQuery({ baseUrl: "https://dummyjson.com" }),
   tagTypes: ["Posts"],
+  keepUnusedDataFor: 120,
   endpoints: (builder) => ({
     listPosts: builder.query<ReturnedType, { skip: number; limit: number }>({
       query: ({ skip = 0, limit = 5 }) => `/posts?limit=${limit}&skip=${skip}`,
