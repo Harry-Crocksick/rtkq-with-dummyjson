@@ -57,15 +57,11 @@ function App() {
     <>
       <Navigation skip={skip} limit={limit} />
       <div className="space-x-4 flex justify-center items-center mt-4">
-        <Button
-          paginate={goToPrevious}
-          disabled={skip === 0 ? true : false}
-          label="Prev"
-        />
+        <Button paginate={goToPrevious} disabled={skip === 0} label="Prev" />
         <Button
           isFetching={isFetching}
           paginate={goToNext}
-          disabled={skip === allPosts?.posts.length ? true : false}
+          disabled={skip === allPosts?.posts.length}
           label="Next"
           // onMouseEnter={prefetchNext}
         />
